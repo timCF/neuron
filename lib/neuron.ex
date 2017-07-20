@@ -8,29 +8,29 @@ defmodule Neuron do
   @doc """
   runs a query request to your graphql endpoint
   """
-  def query(query_string) do
+  def query(query_string, headers \\ [], options \\ []) do
     query_string
     |> construct_query_string()
-    |> run()
+    |> run(headers, options)
   end
 
   @doc """
   runs a mutation request to your graphql endpoint
   """
-  def mutation(mutation_string) do
+  def mutation(mutation_string, headers \\ [], options \\ []) do
     mutation_string
     |> construct_mutation_string()
-    |> run()
+    |> run(headers, options)
   end
 
-  defp run(body) do
+  defp run(body, headers, options) do
     body
-    |> run_query
+    |> run_query(headers, options)
     |> Response.handle()
   end
 
-  defp run_query(body) do
-    Connection.post(url(), body)
+  defp run_query(body, headers, options) do
+    Connection.post(url(), body, headers, options)
   end
 
   defp construct_query_string(query_string) do
